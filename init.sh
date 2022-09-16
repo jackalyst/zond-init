@@ -22,17 +22,19 @@ if [ -f ~/zond/wallet.json ]; then
 	echo "... Backed up wallet to ~/$walletbackup"
 fi
 
-echo -e "\nDo you wish remove your ~/.zond/ and ~/zond/ directories?"
+echo -e "\nDo you wish remove your ~/.zond/ directory (keeps state)?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) 
 			xtrace on
 			rm -rf ~/.zond
-			rm -rf ~/zond
 			xtrace off
-			echo "... Removed ~/.zond/ and ~/zond/ directories";
+			echo "... Removed ~/.zond/ directories";
 			break;;
-        No ) exit;;
+        No ) 
+            echo "... Keeping zond state files (~/.zond)"
+        
+            exit;;
     esac
 done
 
