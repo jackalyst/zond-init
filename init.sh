@@ -82,7 +82,7 @@ if [ -n "$walletname" ]; then
 	fi
 fi
 
-cd zond
+cd ~/zond
 go build ~/zond/cmd/gzond
 go build ~/zond/cmd/zond-cli
 
