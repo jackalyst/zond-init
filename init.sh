@@ -33,8 +33,7 @@ select yn in "Yes" "No"; do
 			break;;
         No ) 
             echo "... Keeping zond state files (~/.zond)"
-        
-            exit;;
+            break;;
     esac
 done
 
@@ -93,6 +92,7 @@ select yn in "Yes" "No"; do
     case $yn in
         Yes ) 
 			xtrace on
+            screen -XS zond quit
 			screen -S zond -dm ./gzond
 			xtrace off		
 			break;;
