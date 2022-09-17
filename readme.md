@@ -1,6 +1,6 @@
 # Zond Init
 
-It's not recommended to install things without reading it, so fist make sure you read the the [init.sh](./init.sh) file.
+It's not recommended to install things without reading it, so fist make sure you read the [init.sh](./init.sh) file.
 
 ## 1. Install requirements
 
