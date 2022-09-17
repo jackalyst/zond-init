@@ -1,5 +1,22 @@
 #!/bin/bash
 
+bootstrap=https://raw.githubusercontent.com/jackalyst/zond-init/main/bootstrap-devnet.tar.xz
+
+if ! command -v go &> /dev/null
+then
+    echo "go could not be found. Please install it first"
+    exit
+fi
+
+# Check the go version
+ver=$(go version | { read _ _ v _; echo ${v#go}; })
+subver=$(echo $ver | cut -d'.' -f2)
+
+if [[ $subver -lt 18 ]]; then
+	echo "Your go version is v$ver, please upgrade to at least v1.18.0 first"
+	exit;
+fi
+
 shopt -s expand_aliases
 _xtrace() {
     case $1 in
@@ -22,35 +39,49 @@ if [ -f ~/zond/wallet.json ]; then
 	echo "... Backed up wallet to ~/$walletbackup"
 fi
 
-echo -e "\nDo you wish remove your ~/.zond/ directory (keeps state)?"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) 
-			xtrace on
-			rm -rf ~/.zond
-			xtrace off
-			echo "... Removed ~/.zond/ directories";
-			break;;
-        No ) 
-            echo "... Keeping zond state files (~/.zond)"
-            break;;
-    esac
-done
+if [ -d ~/.zond/ ]; then
+	echo -e "\nDo you wish remove your ~/.zond/ directory (keeps state)?"
+	select yn in "Yes" "No"; do
+	    case $yn in
+	        Yes ) 
+				xtrace on
+				rm -rf ~/.zond
+				xtrace off
+				echo "... Removed ~/.zond/ directories";
+				break;;
+	        No ) 
+	            echo "... Keeping zond state files (~/.zond)"
+	            break;;
+	    esac
+	done
+fi
 
+if [ -d ~/zond/ ]; then
+	echo -e "\nDo you want to replace the ~/zond/ directory?"
+	select yn in "Yes" "No"; do
+	    case $yn in
+	        Yes ) 
+				xtrace on
+				rm -rf ~/zond/
+				git clone https://github.com/theQRL/zond ~/zond
+				xtrace off
+				echo "... Replaced the ~/zond/ directory";
+				break;;
+	        No ) 
+	            echo "... Keeping zond directory (~/zond)"
+	            break;;
+	    esac
+	done
+fi
 
-echo "... Downloading bootstrap-devnet.zip to ~/Downloads/"
-wget https://raw.githubusercontent.com/jackalyst/zond-init/main/bootstrap-devnet.zip -O ~/Downloads/bootstrap-devnet.zip
+echo "... Downloading bootstrap-devnet.tar.xz to ~/Downloads/"
+mkdir -p ~/Downloads/bootstrap-devnet/
+wget $bootstrap -O ~/Downloads/bootstrap-devnet.tar.xz
 
 echo "... Extracting bootstrap files to ~/Downloads/bootstrap-devnet/"
-unzip -o ~/Downloads/bootstrap-devnet.zip -d ~/Downloads/boostrap-devnet/
-
-echo "... Cloning zond repo to ~/zond"
-xtrace on
-git clone https://github.com/theQRL/zond ~/zond
-xtrace off
+tar -xf ~/Downloads/bootstrap-devnet.tar.xz -C ~/Downloads/bootstrap-devnet/ --strip-components=1
 
 if [[ -d ~/Downloads/bootstrap-devnet/ ]]; then
-
 
 echo "... copying genesis files and editing the peer list in config.go"
 xtrace on
