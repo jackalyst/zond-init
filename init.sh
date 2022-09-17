@@ -72,6 +72,8 @@ if [ -d ~/zond/ ]; then
 	            break;;
 	    esac
 	done
+else
+	git clone https://github.com/theQRL/zond ~/zond
 fi
 
 echo "... Downloading bootstrap-devnet.tar.xz to ~/Downloads/"
