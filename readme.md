@@ -37,7 +37,7 @@ It's recommended to use the init script as it's careful not do do things destruc
 bash <(curl -s https://raw.githubusercontent.com/jackalyst/zond-init/main/init.sh)
 ```
 
-For those that are installing on an Ubuntu 20.04/22.04 VPS, there's a specific ubuntu install script
+For those that are installing on an Ubuntu 20.04/22.04 VPS, there's a specific mostly unattended ubuntu install script which also installs the requirements above.
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/jackalyst/zond-init/main/ubuntu.sh)
