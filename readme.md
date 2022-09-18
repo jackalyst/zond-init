@@ -31,8 +31,20 @@ exec bash
 
 ## 2. Install/reinstall Zond
 
+It's recommended to use the init script as it's careful not do do things destructively.
+
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/jackalyst/zond-init/main/init.sh)
 ```
 
-From there it will download and install the Zond node (at this time Zond Public Devnet). 
+For those that are installing on an Ubuntu 20.04/22.04 VPS, there's a specific ubuntu install script
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/jackalyst/zond-init/main/ubuntu.sh)
+```
+
+Both will download and install the Zond node (at this time Zond Public Devnet). 
+
+## A note on the Raspberry Pi
+
+There's a few modifications required to have it work on the Raspberry Pi, which I'm not sure would make for a reliable node on the network so I'm not sharing it at this time. 
