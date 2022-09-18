@@ -1,7 +1,5 @@
 #!/bin/bash
 
-bootstrap=https://raw.githubusercontent.com/jackalyst/zond-init/main/bootstrap-devnet.tar.xz
-
 if ! command -v go &> /dev/null
 then
     echo "go could not be found. Please install it first"
@@ -74,39 +72,6 @@ if [ -d ~/zond/ ]; then
 	done
 else
 	git clone https://github.com/theQRL/zond ~/zond
-fi
-
-echo "... Downloading bootstrap-devnet.tar.xz to ~/Downloads/"
-mkdir -p ~/Downloads/bootstrap-devnet/
-wget $bootstrap -O ~/Downloads/bootstrap-devnet.tar.xz
-
-echo "... Extracting bootstrap files to ~/Downloads/bootstrap-devnet/"
-tar -xf ~/Downloads/bootstrap-devnet.tar.xz -C ~/Downloads/bootstrap-devnet/ --strip-components=1
-
-if [[ -d ~/Downloads/bootstrap-devnet/ ]]; then
-
-echo "... copying genesis files and editing the peer list in config.go"
-xtrace on
-cp -r ~/Downloads/bootstrap-devnet/block/genesis/devnet/ ~/zond/block/genesis/
-cp ~/Downloads/bootstrap-devnet/config/config.go ~/zond/config/config.go
-
-patch -u ~/zond/config/config.go -p0 <<'EOF'
-@@ -178,7 +178,7 @@
- func GetUserConfig() (userConf *UserConfig) {
- 	node := &NodeConfig{
- 		EnablePeerDiscovery:     true,
--		PeerList:                []string{},
-+		PeerList:                []string{"/ip4/45.76.43.83/tcp/15005/p2p/QmU6Uo93bSgU7bA8bkbdNhSfbmp7S5XJEcSqgrdLzH6ksT"},
- 		BindingIP:               "0.0.0.0",
- 		LocalPort:               15005,
- 		PublicPort:              15005,
-EOF
-xtrace off
-
-
-else 
-	echo "It doesn't look like you have the bootstrap-devnet directory in ~/Downloads/bootstrap-devnet/"
-	echo "Please get it from a reliable source."
 fi
 
 if [ -n "$walletname" ]; then

@@ -12,7 +12,6 @@ select yn in "Yes" "No"; do
     esac
 done
 
-
 echo "... Installing requirements"
 sleep 2
 sudo apt -y update
@@ -28,31 +27,8 @@ sleep 2
 rm -rf ~/.zond
 rm -rf ~/zond
 
-
-echo "... Downloading zond and bootstrap files"
-sleep 2
-
-mkdir -p ~/Downloads/bootstrap-devnet/
+echo "... Downloading zond"
 git clone https://github.com/theQRL/zond ~/zond
-wget https://raw.githubusercontent.com/jackalyst/zond-init/main/bootstrap-devnet.tar.xz -O ~/Downloads/bootstrap-devnet.tar.xz
-tar -xf ~/Downloads/bootstrap-devnet.tar.xz -C ~/Downloads/bootstrap-devnet/ --strip-components=1
-
-echo "... Applying modifications"
-sleep 2
-
-cp -r ~/Downloads/bootstrap-devnet/block/genesis/devnet/ ~/zond/block/genesis/
-cp ~/Downloads/bootstrap-devnet/config/config.go ~/zond/config/config.go
-patch -u ~/zond/config/config.go -p0 <<'EOF'
-@@ -178,7 +178,7 @@
- func GetUserConfig() (userConf *UserConfig) {
- 	node := &NodeConfig{
- 		EnablePeerDiscovery:     true,
--		PeerList:                []string{},
-+		PeerList:                []string{"/ip4/45.76.43.83/tcp/15005/p2p/QmU6Uo93bSgU7bA8bkbdNhSfbmp7S5XJEcSqgrdLzH6ksT"},
- 		BindingIP:               "0.0.0.0",
- 		LocalPort:               15005,
- 		PublicPort:              15005,
-EOF
 
 echo "... Building zond"
 sleep 2
